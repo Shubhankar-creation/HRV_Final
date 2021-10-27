@@ -7,7 +7,6 @@ using namespace std;
 
 fstream rawData;
 vector<float> y;
-
 float threshold = 0.0f, maxAptitude = 0.0f, minAptitude = 10.0f, val = 0.0f;
 float Rwave = 0.0f;
 
@@ -55,7 +54,7 @@ float  getPeak(float Rwave, float val)
 
 int main()
 {
-	rawData.open("Dataset/ecg-1.csv");
+	rawData.open("Dataset/ecg-3.csv");
 
 	storeData();
 
@@ -63,6 +62,7 @@ int main()
 
 	for (auto val = y.begin(); val != y.end(); val++)
 	{
+
 		if (*val > threshold || Rwave > threshold)
 		{
 			Rwave = getPeak(Rwave, *val);
