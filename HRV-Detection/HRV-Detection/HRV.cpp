@@ -20,7 +20,7 @@ void storeData()
 		getline(rawData, line, '\n');
 		y.push_back(stof(line));
 	}
-	cout << y.size() << endl;
+	cout << "Data sets present in the raw ECG data are " << y.size() << endl;
 }
 
 void getThreshold()
@@ -35,7 +35,7 @@ void getThreshold()
 
 	threshold = (((minAptitude + maxAptitude) / 2) + maxAptitude) / 2;
 
-	cout << "max val is " << maxAptitude << endl << "min val is " << minAptitude << endl << "Threshold is " << threshold << endl;
+	cout << "Maximum Aptitude is " << maxAptitude << endl << "Minimum Aptitude is " << minAptitude << endl << "Threshold is " << threshold << endl;
 }
 
 float  getPeak(float Rwave, float val)
@@ -46,7 +46,7 @@ float  getPeak(float Rwave, float val)
 	}
 	else if (val < Rwave)
 	{
-		cout << "Peak val is " << Rwave << endl;
+		//cout << "Peak val is " << Rwave << endl;
 		numOfBeats++;
 		return 0;
 	}
@@ -54,15 +54,27 @@ float  getPeak(float Rwave, float val)
 
 int main()
 {
-	rawData.open("Dataset/ecg-3.csv");
+	int timeLimit;
+	cout << "Enter the range for calculating the number of heart beats in that range" << endl;
+	cin >> timeLimit;
+	
+	rawData.open("Dataset/ecg-1.csv");
 
 	storeData();
 
 	getThreshold();
 
+	int flag = 1, heartBeat = 0;
 	for (auto val = y.begin(); val != y.end(); val++)
 	{
-
+		flag++;
+		if (flag == timeLimit)
+		{
+			heartBeat = numOfBeats - heartBeat;
+			cout << "Number of beats in " <<timeLimit << "ECG raw signal values are " << heartBeat << endl;
+			heartBeat = numOfBeats;
+			flag = 1;
+		}
 		if (*val > threshold || Rwave > threshold)
 		{
 			Rwave = getPeak(Rwave, *val);
